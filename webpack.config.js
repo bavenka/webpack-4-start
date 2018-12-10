@@ -1,9 +1,10 @@
 const path = require('path');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const WebpackMd5Hash = require('webpack-md5-hash');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+
+const devMode = process.env.NODE_ENV !== 'production'
 
 const config = {
   entry: './src/index.js',
@@ -22,10 +23,9 @@ const config = {
         }
       },
       {
-        test: /\.scss$/,
+        test: /\.(sa|sc|c)ss$/,
         use: [
-          'style-loader',
-          MiniCssExtractPlugin.loader,
+          devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
           'css-loader',
           'postcss-loader',
           'sass-loader'
@@ -37,14 +37,16 @@ const config = {
         options: {
           name: '[path][name].[ext]',
           outputPath: 'images/',
+          useRelativePath: !devMode
         },
       },
     ]
   },
   plugins: [
-    new CleanWebpackPlugin('dist', {}),
+    new CleanWebpackPlugin(['dist']),
     new MiniCssExtractPlugin({
-      filename: 'style.[contenthash].css',
+      filename: devMode ? '[name].css' : '[name].[contenthash].css',
+      chunkFilename: devMode ? '[id].css' : '[id].[contenthash].css',
     }),
     new HtmlWebpackPlugin({
       inject: false,
@@ -52,8 +54,28 @@ const config = {
       template: './src/index.html',
       filename: 'index.html',
     }),
-    new WebpackMd5Hash()
-  ]
+    new webpack.HashedModuleIdsPlugin(),
+  ],
+  optimization: {
+         runtimeChunk: 'single',
+     splitChunks: {
+       cacheGroups: {
+        vendor: {
+           test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+           chunks: 'all'
+        }
+       }
+     },
+    minimizer: [
+      new UglifyJsPlugin({
+        cache: true,
+        parallel: true,
+        sourceMap: devMode,
+      }),
+      new OptimizeCSSAssetsPlugin({})
+    ]
+  },
 };
 
 module.exports = (env, argv) => argv.mode === 'development'
