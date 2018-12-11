@@ -1,27 +1,37 @@
 const path = require('path');
 
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 
-const devMode = process.env.NODE_ENV !== 'production'
+const devMode = process.env.NODE_ENV !== 'production';
 
-const config = {
-  entry: './src/index.js',
-  
+
+module.exports = {
+  entry: {
+    app: './src/index.js',
+  },
+
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name].[chunkhash].js'
+    filename: '[name].[hash].js'
+  },
+
+  resolve: {
+    extensions: ['.json', '.jsx', '.js'],
   },
 
   module: {
     rules: [{
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "babel-loader"
-        }
-      },
+      test: /\.jsx?$/,
+      exclude: /node_modules/,
+      use: {
+        loader: "babel-loader"
+      }
+    },
       {
         test: /\.(sa|sc|c)ss$/,
         use: [
@@ -57,16 +67,16 @@ const config = {
     new webpack.HashedModuleIdsPlugin(),
   ],
   optimization: {
-         runtimeChunk: 'single',
-     splitChunks: {
-       cacheGroups: {
+    runtimeChunk: 'single',
+    splitChunks: {
+      cacheGroups: {
         vendor: {
-           test: /[\\/]node_modules[\\/]/,
+          test: /[\\/]node_modules[\\/]/,
           name: 'vendors',
-           chunks: 'all'
+          chunks: 'all'
         }
-       }
-     },
+      }
+    },
     minimizer: [
       new UglifyJsPlugin({
         cache: true,
@@ -77,7 +87,3 @@ const config = {
     ]
   },
 };
-
-module.exports = (env, argv) => argv.mode === 'development'
- ? config.devtool = 'source-map'
- : config;
