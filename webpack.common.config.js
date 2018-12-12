@@ -25,13 +25,23 @@ module.exports = {
   },
 
   module: {
-    rules: [{
-      test: /\.jsx?$/,
-      exclude: /node_modules/,
-      use: {
-        loader: "babel-loader"
-      }
-    },
+    rules: [
+      {
+        enforce: "pre",
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        loader: "eslint-loader",
+        options: {
+          cache: true,
+        }
+      },
+      {
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader"
+        }
+      },
       {
         test: /\.(sa|sc|c)ss$/,
         use: [
@@ -75,7 +85,7 @@ module.exports = {
         minifyJS: true,
         minifyCSS: true,
         minifyURLs: true,
-    },
+      },
     }),
     new webpack.HashedModuleIdsPlugin(),
   ],
