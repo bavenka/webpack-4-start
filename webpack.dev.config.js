@@ -10,7 +10,7 @@ module.exports = merge(common, {
     open: true,
     port: 8000,
     progress: true,
-    hot: true
+    hot: true,
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
