@@ -21,7 +21,9 @@ const devConfig = {
       filename: '[name].css',
       chunkFilename: '[id].css',
     }),
-    new HtmlWebpackPlugin(),
+    new HtmlWebpackPlugin({
+      template: './src/index.html',
+    }),
     new webpack.HotModuleReplacementPlugin(),
   ],
 };
