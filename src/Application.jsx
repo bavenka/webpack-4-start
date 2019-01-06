@@ -1,13 +1,13 @@
 import React from 'react';
 
-import CounterContainer from './blocks/counter/CounterContainer';
+import Counter from './blocks/counter/Counter';
 
 import './application.scss';
 
 
 const Application = () => (
   <div>
-    <CounterContainer />
+    <Counter />
   </div>
 );
 

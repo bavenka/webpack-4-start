@@ -1,22 +1,18 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-export default function Counter({
-  onIncrement,
-  onDecrement,
-  counter,
-}) {
+import CounterContext from './CounterContext';
+
+export default function Counter() {
   return (
-    <div>
-      <button onClick={() => onIncrement()} type="button">increment</button>
-      <span>{counter}</span>
-      <button onClick={() => onDecrement()} type="button">decrement</button>
-    </div>
+    <CounterContext.Consumer>
+      {({ onIncrement, onDecrement, counter }) => (
+        <div>
+          <button onClick={() => onIncrement()} type="button">increment</button>
+          <span>{counter}</span>
+          <button onClick={() => onDecrement()} type="button">decrement</button>
+        </div>
+      )}
+
+    </CounterContext.Consumer>
   );
 }
-
-Counter.propTypes = {
-  onIncrement: PropTypes.func.isRequired,
-  onDecrement: PropTypes.func.isRequired,
-  counter: PropTypes.number.isRequired,
-};
