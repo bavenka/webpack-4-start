@@ -1,21 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-import Counter from './blocks/counter/Counter';
+import CounterContainer from './blocks/counter/CounterContainer';
 
 import './application.scss';
 
 
-const Application = ({ store }) => (
+const Application = () => (
   <div>
-    <Counter
-      store={store}
-    />
+    <CounterContainer />
   </div>
 );
 
 export default Application;
-
-Application.propTypes = {
-  store: PropTypes.shape({}).isRequired,
-};

@@ -1,7 +1,6 @@
-import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-import counterReducer from '../reducers/counterReducer';
+import { createStore } from 'redux';
+import counter from '../reducers/counter';
 
 export default function storeFactory() {
-  return createStore(counterReducer, applyMiddleware(thunk));
+  return createStore(counter);
 }

@@ -1,16 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
-import storeFactory from './flux/store/storeFactory';
+import { Provider } from 'react-redux';
 
 import Application from './Application';
+import storeFactory from './flux/store/storeFactory';
 
 
 const store = storeFactory();
 
-// eslint-disable-next-line
-const render = () => ReactDOM.render(<Application store={store} />, document.getElementById('container'));
-
-store.subscribe(render);
-
-render();
+ReactDOM.render(
+  <Provider store={store}>
+    <Application />
+  </Provider>,
+  document.getElementById('container'),
+);
